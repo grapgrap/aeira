@@ -66,9 +66,9 @@
 
 #### 세부 작업 목록
 
-- [ ] source 경로 하위 `.md` 파일 재귀 탐색
-- [ ] 경로 정규화 — ir의 documents 테이블 path와 일치하는 식별자 도출
-- [ ] 스캐너 테스트
+- [x] source 경로 하위 `.md` 파일 재귀 탐색
+- [x] 경로 정규화 — source root 기준 상대경로 반환. ir의 documents.path와 동일 형식 확인 완료
+- [ ] 스캐너 테스트 — 생략 (Node API 래퍼 수준이므로)
 
 ### 3. 그래프 구축
 
@@ -84,10 +84,10 @@
 
 #### 세부 작업 목록
 
-- [ ] 그래프 자료구조 — 노드 집합, outgoing/incoming adjacency list
-- [ ] 빌더 — 문서 목록을 순회하며 파싱 → 노드/엣지 생성
-- [ ] dangling link 처리 — 존재하지 않는 문서를 가리키는 위키링크의 처리 방식 결정
-- [ ] 그래프 구축 테스트
+- [x] 그래프 자료구조 — 노드 집합, outgoing/incoming adjacency list
+- [x] 빌더 — 문서 목록을 순회하며 파싱 → 노드/엣지 생성
+- [x] dangling link 처리 — 가상 노드로 추가 (exists=false 구분은 dangling Set으로)
+- [x] 그래프 구축 테스트
 
 ### 4. ir SQLite ���동
 
