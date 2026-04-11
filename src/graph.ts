@@ -10,7 +10,7 @@ export interface Graph {
 }
 
 export function buildGraph(documents: ScannedDocument[]): Graph {
-  const nameIndex = buildNameIndex(documents);
+  const nameIndex = buildNameIndex(documents.map((d) => d.path));
 
   const nodes = new Set<string>();
   const dangling = new Set<string>();
@@ -39,12 +39,12 @@ export function buildGraph(documents: ScannedDocument[]): Graph {
   return { nodes, dangling, outgoing, incoming };
 }
 
-function buildNameIndex(documents: ScannedDocument[]): Map<string, string> {
+export function buildNameIndex(paths: string[]): Map<string, string> {
   const index = new Map<string, string>();
-  for (const doc of documents) {
-    const stem = basename(doc.path, ".md");
+  for (const path of paths) {
+    const stem = basename(path, ".md");
     if (!index.has(stem)) {
-      index.set(stem, doc.path);
+      index.set(stem, path);
     }
   }
   return index;

@@ -6,12 +6,25 @@ import type { Graph } from "./graph";
 
 const hashRow = z.object({ hash: z.string() });
 const edgeRow = z.object({ source_path: z.string(), target_path: z.string() });
+const documentContentRow = z.object({ path: z.string(), content: z.string(), hash: z.string() });
 const pathRow = z.object({ path: z.string() });
 
 export interface DocumentChanges {
   added: string[];
   changed: string[];
   removed: string[];
+}
+
+export interface DocumentContent {
+  path: string;
+  content: string;
+  hash: string;
+}
+
+export interface SyncEntry {
+  sourcePath: string;
+  targetPaths: string[];
+  hash: string;
 }
 
 const DEFAULT_IR_CONFIG_DIR = join(homedir(), ".config", "ir");
@@ -63,6 +76,11 @@ function getStatements(database: Database.Database) {
       LEFT JOIN documents d ON s.source_path = d.path AND d.active = 1
       WHERE d.id IS NULL
     `),
+    readDocumentContent: database.prepare(
+      "SELECT d.path, c.doc as content, d.hash FROM documents d JOIN content c ON d.hash = c.hash WHERE d.active = 1 AND d.path = ?",
+    ),
+    deleteEdgesBySource: database.prepare("DELETE FROM aeira_edges WHERE source_path = ?"),
+    deleteSyncStateBySource: database.prepare("DELETE FROM aeira_sync_state WHERE source_path = ?"),
   };
 }
 
@@ -77,6 +95,10 @@ export interface Store {
   saveEdges(graph: Graph): void;
   loadEdges(): Graph;
   getChangedDocuments(): DocumentChanges;
+  getActiveDocumentPaths(): string[];
+  readDocumentContents(paths: string[]): DocumentContent[];
+  purgeDocuments(sourcePaths: string[]): void;
+  syncDocuments(entries: SyncEntry[]): void;
 }
 
 export function createStore(database: Database.Database): Store {
@@ -153,6 +175,41 @@ export function createStore(database: Database.Database): Store {
         changed: parsePaths(statements.selectChangedDocuments.all()),
         removed: parsePaths(statements.selectRemovedDocuments.all()),
       };
+    },
+
+    getActiveDocumentPaths(): string[] {
+      return parsePaths(statements.selectActiveDocuments.all());
+    },
+
+    readDocumentContents(paths: string[]): DocumentContent[] {
+      const results: DocumentContent[] = [];
+      for (const path of paths) {
+        const raw = statements.readDocumentContent.get(path);
+        if (raw) {
+          results.push(documentContentRow.parse(raw));
+        }
+      }
+      return results;
+    },
+
+    purgeDocuments(sourcePaths: string[]): void {
+      database.transaction(() => {
+        for (const path of sourcePaths) {
+          statements.deleteEdgesBySource.run(path);
+          statements.deleteSyncStateBySource.run(path);
+        }
+      })();
+    },
+
+    syncDocuments(entries: SyncEntry[]): void {
+      database.transaction(() => {
+        for (const entry of entries) {
+          for (const targetPath of entry.targetPaths) {
+            statements.insertEdge.run(entry.sourcePath, targetPath);
+          }
+          statements.insertSyncState.run(entry.sourcePath, entry.hash);
+        }
+      })();
     },
   };
 }

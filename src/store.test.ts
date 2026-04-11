@@ -13,14 +13,19 @@ function createTestDatabase(): Database.Database {
       hash TEXT NOT NULL,
       active INTEGER NOT NULL DEFAULT 1
     );
+    CREATE TABLE content (
+      hash TEXT PRIMARY KEY,
+      doc TEXT NOT NULL
+    );
   `);
   return database;
 }
 
-function addDocument(database: Database.Database, path: string, hash: string): void {
+function addDocument(database: Database.Database, path: string, hash: string, content = ""): void {
   database
     .prepare("INSERT INTO documents (path, title, hash) VALUES (?, ?, ?)")
     .run(path, path, hash);
+  database.prepare("INSERT OR IGNORE INTO content (hash, doc) VALUES (?, ?)").run(hash, content);
 }
 
 function makeGraph(options: {
