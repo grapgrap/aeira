@@ -104,11 +104,11 @@
 
 #### 세부 작업 목록
 
-- [ ] edges 테이블 스키마 — ir의 documents 테이블과 JOIN 가능한 구조
-- [ ] 그래프 → SQLite 저장 (edges 쓰기)
-- [ ] SQLite → 그래프 로드 (edges 읽기)
-- [ ] 변경 감지 — ir의 문서 해시 변경 시 해당 문서의 엣지 재구축
-- [ ] 연동 테스트
+- [x] edges 테이블 스키마 — aeira_edges (path 기반, FK 없음), aeira_sync_state (해시 추적)
+- [x] 그래프 → SQLite 저장 (edges 쓰기)
+- [x] SQLite → 그래프 로드 (edges 읽기)
+- [x] 변경 감지 — documents.hash vs aeira_sync_state.hash 비교로 added/changed/removed 도출
+- [x] 연동 테스트
 
 ### 5. CLI sync 명령
 
