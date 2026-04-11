@@ -1,0 +1,42 @@
+{
+  "name": "aeira",
+  "version": "0.0.0",
+  "description": "위키링크 기반 문서 관계 그래프 도구",
+  "bin": "./dist/cli.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsdown",
+    "type-check": "tsc --noEmit",
+    "dev": "tsdown --watch",
+    "test": "vitest",
+    "lint": "oxlint",
+    "fmt": "oxfmt --write .",
+    "fmt:check": "oxfmt --check .",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "citty": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0",
+    "tsdown": "^0.12.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "oxlint",
+      "oxfmt --write"
+    ]
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "yarn@4.13.0"
+}
