@@ -29,10 +29,10 @@
 
 #### 세부 작업 목록
 
-- [ ] TypeScript + Node.js 패키지 초기화
-- [ ] better-sqlite3 의존 추가
-- [ ] 빌드/테스트 설정
-- [ ] CLI 엔트리포���트 스캐폴딩
+- [x] TypeScript + Node.js 패키지 초기화
+- [x] better-sqlite3 의존 추가
+- [x] 빌드/테스트 설정
+- [x] CLI 엔트리포���트 스캐폴딩
 
 ### 1. 위키링크 파서
 
