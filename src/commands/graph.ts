@@ -11,7 +11,7 @@ function openGraph(source: string): { database: Database.Database; graph: Graph 
   const dbPath = getCollectionDbPath(collection);
 
   if (!existsSync(dbPath)) {
-    console.error(`Collection not found: ${collection}. Run 'aeira sync ${source}' first.`);
+    console.error(`Collection not found: ${collection}. Run 'aeira sync' first.`);
     process.exit(1);
   }
 
@@ -26,8 +26,13 @@ const validDirections = new Set<string>(["outgoing", "incoming", "both"]);
 const neighborsCommand = defineCommand({
   meta: { name: "neighbors", description: "List 1-hop neighbors of a node" },
   args: {
-    source: { type: "positional", description: "source directory path", required: true },
     node: { type: "positional", description: "target node", required: true },
+    source: {
+      type: "string",
+      description: "source directory path",
+      alias: "s",
+      default: process.cwd(),
+    },
     direction: { type: "string", description: "outgoing | incoming | both", default: "both" },
     json: { type: "boolean", description: "output as JSON", default: false },
   },
@@ -54,9 +59,14 @@ const neighborsCommand = defineCommand({
 const pathCommand = defineCommand({
   meta: { name: "path", description: "Find all paths between two nodes" },
   args: {
-    source: { type: "positional", description: "source directory path", required: true },
     from: { type: "positional", description: "start node", required: true },
     to: { type: "positional", description: "end node", required: true },
+    source: {
+      type: "string",
+      description: "source directory path",
+      alias: "s",
+      default: process.cwd(),
+    },
     "max-paths": { type: "string", description: "max number of paths", default: "20" },
     json: { type: "boolean", description: "output as JSON", default: false },
   },
@@ -79,7 +89,12 @@ const pathCommand = defineCommand({
 const allCommand = defineCommand({
   meta: { name: "all", description: "Show entire graph" },
   args: {
-    source: { type: "positional", description: "source directory path", required: true },
+    source: {
+      type: "string",
+      description: "source directory path",
+      alias: "s",
+      default: process.cwd(),
+    },
     json: { type: "boolean", description: "output as JSON", default: false },
   },
   run({ args }) {

@@ -9,8 +9,13 @@ import { createReadonlyStore, getCollectionDbPath } from "../store";
 export const search = defineCommand({
   meta: { name: "search", description: "Search documents via ir" },
   args: {
-    source: { type: "positional", description: "source directory path", required: true },
     query: { type: "positional", description: "search query", required: true },
+    source: {
+      type: "string",
+      description: "source directory path",
+      alias: "s",
+      default: process.cwd(),
+    },
     json: { type: "boolean", description: "output as JSON", default: false },
   },
   run({ args }) {
@@ -19,7 +24,7 @@ export const search = defineCommand({
     const dbPath = getCollectionDbPath(collection);
 
     if (!existsSync(dbPath)) {
-      console.error(`Collection not found: ${collection}. Run 'aeira sync ${args.source}' first.`);
+      console.error(`Collection not found: ${collection}. Run 'aeira sync' first.`);
       process.exit(1);
     }
 

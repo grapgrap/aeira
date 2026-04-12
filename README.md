@@ -28,7 +28,8 @@ aeira init ./my-docs
 위키링크를 파싱하여 그래프를 구축하고 갱신한다. 변경된 문서만 증분 처리한다.
 
 ```sh
-aeira sync ./my-docs
+aeira sync                  # cwd를 source로 사용
+aeira sync -s ./my-docs     # source 경로 지정
 ```
 
 ### search
@@ -36,7 +37,8 @@ aeira sync ./my-docs
 키워드로 문서를 검색하고, 각 결과의 outgoing links를 함께 표시한다.
 
 ```sh
-aeira search ./my-docs "키워드"
+aeira search "키워드"
+aeira search -s ./my-docs "키워드"
 ```
 
 ### graph
@@ -45,13 +47,16 @@ aeira search ./my-docs "키워드"
 
 ```sh
 # 1-hop 이웃 조회
-aeira graph neighbors ./my-docs node-name
+aeira graph neighbors node-name
 
 # 두 노드 간 경로 탐색
-aeira graph path ./my-docs from-node to-node
+aeira graph path from-node to-node
 
 # 전체 그래프 출력
-aeira graph all ./my-docs
+aeira graph all
+
+# source 경로 지정
+aeira graph neighbors -s ./my-docs node-name
 ```
 
 모든 조회 명령은 `--json` 플래그로 JSON 출력을 지원한다.
@@ -74,12 +79,14 @@ npm install -g aeira
 source 경로를 지정하여 그래프를 구축한다.
 
 ```sh
-aeira sync ./my-docs
+aeira init ./my-docs
+cd ./my-docs
+aeira sync
 ```
 
 sync 이후 그래프를 탐색할 수 있다.
 
 ```sh
-aeira graph neighbors ./my-docs some-document
-aeira search ./my-docs "검색어"
+aeira graph neighbors some-document
+aeira search "검색어"
 ```

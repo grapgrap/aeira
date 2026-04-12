@@ -28,7 +28,8 @@ aeira init ./my-docs
 Parse wikilinks to build and update the graph. Only changed documents are processed incrementally.
 
 ```sh
-aeira sync ./my-docs
+aeira sync                  # use cwd as source
+aeira sync -s ./my-docs     # specify source path
 ```
 
 ### search
@@ -36,7 +37,8 @@ aeira sync ./my-docs
 Search documents by keyword and display outgoing links alongside each result.
 
 ```sh
-aeira search ./my-docs "keyword"
+aeira search "keyword"
+aeira search -s ./my-docs "keyword"
 ```
 
 ### graph
@@ -45,13 +47,16 @@ Three primitives for navigating the graph.
 
 ```sh
 # List 1-hop neighbors
-aeira graph neighbors ./my-docs node-name
+aeira graph neighbors node-name
 
 # Find all paths between two nodes
-aeira graph path ./my-docs from-node to-node
+aeira graph path from-node to-node
 
 # Show entire graph
-aeira graph all ./my-docs
+aeira graph all
+
+# Specify source path
+aeira graph neighbors -s ./my-docs node-name
 ```
 
 All query commands support JSON output with the `--json` flag.
@@ -74,12 +79,14 @@ npm install -g aeira
 Build the graph by specifying a source path.
 
 ```sh
-aeira sync ./my-docs
+aeira init ./my-docs
+cd ./my-docs
+aeira sync
 ```
 
 After sync, you can navigate the graph.
 
 ```sh
-aeira graph neighbors ./my-docs some-document
-aeira search ./my-docs "query"
+aeira graph neighbors some-document
+aeira search "query"
 ```

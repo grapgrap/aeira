@@ -11,9 +11,10 @@ export const sync = defineCommand({
   meta: { name: "sync", description: "Sync wikilink graph from source" },
   args: {
     source: {
-      type: "positional",
+      type: "string",
       description: "source directory path",
-      required: true,
+      alias: "s",
+      default: process.cwd(),
     },
   },
   run({ args }) {
