@@ -5,7 +5,7 @@ export type Direction = "outgoing" | "incoming" | "both";
 export function neighbors(graph: Graph, node: string, direction: Direction = "both"): string[] {
   const outgoing = direction !== "incoming" ? graph.outgoing.get(node) : undefined;
   const incoming = direction !== "outgoing" ? graph.incoming.get(node) : undefined;
-  return [...new Set([...(outgoing ?? []), ...(incoming ?? [])])].sort();
+  return [...new Set([...(outgoing ?? []), ...(incoming ?? [])])].toSorted();
 }
 
 export function findPaths(graph: Graph, from: string, to: string, maxPaths = 20): string[][] {
@@ -41,13 +41,13 @@ export interface GraphSnapshot {
 }
 
 export function snapshot(graph: Graph): GraphSnapshot {
-  const nodes = [...graph.nodes].sort();
-  const edges: [string, string][] = [];
+  const nodes = [...graph.nodes].toSorted();
+  let edges: [string, string][] = [];
   for (const [source, targets] of graph.outgoing) {
     for (const target of targets) {
       edges.push([source, target]);
     }
   }
-  edges.sort((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
+  edges = edges.toSorted((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
   return { nodes, edges };
 }

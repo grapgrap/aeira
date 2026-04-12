@@ -27,7 +27,9 @@ export function searchCollection(collection: string, query: string): SearchResul
     return z.array(searchResultRow).parse(JSON.parse(output));
   } catch (error) {
     if (isNotFound(error)) {
-      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.");
+      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.", {
+        cause: error,
+      });
     }
     throw error;
   }
@@ -38,7 +40,9 @@ export function updateCollection(collection: string): void {
     execFileSync("ir", ["update", collection], { stdio: "inherit" });
   } catch (error) {
     if (isNotFound(error)) {
-      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.");
+      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.", {
+        cause: error,
+      });
     }
     throw error;
   }
@@ -49,7 +53,9 @@ export function initCollection(collection: string, sourcePath: string): void {
     execFileSync("ir", ["collection", "add", collection, sourcePath], { stdio: "inherit" });
   } catch (error) {
     if (isNotFound(error)) {
-      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.");
+      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.", {
+        cause: error,
+      });
     }
     throw error;
   }
