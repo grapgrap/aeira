@@ -1,7 +1,9 @@
+import { existsSync } from "node:fs";
 import { basename, resolve } from "node:path";
 import Database from "better-sqlite3";
 import { defineCommand } from "citty";
 import { buildNameIndex } from "../graph";
+import { initCollection, updateCollection } from "../ir";
 import { createStore, getCollectionDbPath } from "../store";
 import { parseWikiLinks } from "../wikilink";
 
@@ -18,6 +20,12 @@ export const sync = defineCommand({
     const sourcePath = resolve(args.source);
     const collection = basename(sourcePath);
     const dbPath = getCollectionDbPath(collection);
+    if (!existsSync(dbPath)) {
+      initCollection(collection, sourcePath);
+    } else {
+      updateCollection(collection);
+    }
+
     const db = new Database(dbPath);
 
     try {

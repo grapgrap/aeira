@@ -125,7 +125,7 @@
 
 - [x] 인덱스 구축 흐름 — ir SQLite content에서 문서 읽기 → 파싱 → ir SQLite에 엣지 저장
 - [x] 부분 재구축 — 변경 감지 후 변경 문서만 재파싱하여 엣지 교체
-- [ ] ir 런타임 검증 — ir collection 부재 시 적절한 에러 메시지 출력 (decision 0006 후속)
+- [x] ir 런타임 검증 — init 명령으로 collection 생성 대행, sync에서 자동 init
 
 ### 6. 그래프 쿼리
 
