@@ -7,7 +7,6 @@ import {
   type SyncEntry,
   documentContentRow,
   edgeRow,
-  hashRow,
   pathRow,
 } from "./types";
 import { parsePaths } from "./utils";
@@ -27,7 +26,6 @@ function ensureSchema(database: Database.Database): void {
 }
 
 export interface Store {
-  saveEdges(graph: Graph): void;
   loadEdges(): Graph;
   getChangedDocuments(): DocumentChanges;
   getActiveDocumentPaths(): string[];
@@ -44,9 +42,6 @@ export function createStore(database: Database.Database): Store {
   );
   const insertSyncState = database.prepare(
     "INSERT INTO aeira_sync_state (source_path, hash) VALUES (?, ?)",
-  );
-  const getDocumentHash = database.prepare(
-    "SELECT hash FROM documents WHERE path = ? AND active = 1",
   );
   const selectAllEdges = database.prepare("SELECT source_path, target_path FROM aeira_edges");
   const selectActiveDocuments = database.prepare("SELECT path FROM documents WHERE active = 1");
@@ -74,28 +69,6 @@ export function createStore(database: Database.Database): Store {
   );
 
   return {
-    saveEdges(graph: Graph): void {
-      database.transaction(() => {
-        database.exec("DELETE FROM aeira_edges");
-        database.exec("DELETE FROM aeira_sync_state");
-
-        for (const [sourcePath, targets] of graph.outgoing) {
-          for (const targetPath of targets) {
-            insertEdge.run(sourcePath, targetPath);
-          }
-        }
-
-        for (const nodePath of graph.nodes) {
-          if (graph.dangling.has(nodePath)) continue;
-          const raw = getDocumentHash.get(nodePath);
-          if (raw) {
-            const row = hashRow.parse(raw);
-            insertSyncState.run(nodePath, row.hash);
-          }
-        }
-      })();
-    },
-
     loadEdges(): Graph {
       const rows = z.array(edgeRow).parse(selectAllEdges.all());
 

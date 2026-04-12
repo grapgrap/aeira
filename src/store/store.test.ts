@@ -1,6 +1,5 @@
 import Database from "better-sqlite3";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { Graph } from "../graph";
 import { createStore } from "./store";
 
 function createTestDatabase(): Database.Database {
@@ -28,28 +27,6 @@ function addDocument(database: Database.Database, path: string, hash: string, co
   database.prepare("INSERT OR IGNORE INTO content (hash, doc) VALUES (?, ?)").run(hash, content);
 }
 
-function makeGraph(options: {
-  nodes?: string[];
-  dangling?: string[];
-  edges?: [string, string][];
-}): Graph {
-  const nodes = new Set(options.nodes ?? []);
-  const dangling = new Set(options.dangling ?? []);
-  const outgoing = new Map<string, Set<string>>();
-  const incoming = new Map<string, Set<string>>();
-
-  for (const [source, target] of options.edges ?? []) {
-    nodes.add(source);
-    nodes.add(target);
-    if (!outgoing.has(source)) outgoing.set(source, new Set());
-    outgoing.get(source)!.add(target);
-    if (!incoming.has(target)) incoming.set(target, new Set());
-    incoming.get(target)!.add(source);
-  }
-
-  return { nodes, dangling, outgoing, incoming };
-}
-
 describe("store", () => {
   let database: Database.Database;
 
@@ -61,22 +38,22 @@ describe("store", () => {
     database.close();
   });
 
-  describe("saveEdges / loadEdges", () => {
-    it("round-trips a graph with edges", () => {
+  describe("syncDocuments / loadEdges", () => {
+    it("round-trips edges through sync and load", () => {
       addDocument(database, "a.md", "hash-a");
       addDocument(database, "b.md", "hash-b");
       const store = createStore(database);
-      store.saveEdges(makeGraph({ nodes: ["a.md", "b.md"], edges: [["a.md", "b.md"]] }));
+      store.syncDocuments([{ sourcePath: "a.md", targetPaths: ["b.md"], hash: "hash-a" }]);
 
       const loaded = store.loadEdges();
       expect(loaded.outgoing.get("a.md")).toEqual(new Set(["b.md"]));
       expect(loaded.incoming.get("b.md")).toEqual(new Set(["a.md"]));
     });
 
-    it("preserves dangling nodes on load", () => {
+    it("marks non-document targets as dangling", () => {
       addDocument(database, "a.md", "hash-a");
       const store = createStore(database);
-      store.saveEdges(makeGraph({ nodes: ["a.md", "x"], dangling: ["x"], edges: [["a.md", "x"]] }));
+      store.syncDocuments([{ sourcePath: "a.md", targetPaths: ["x"], hash: "hash-a" }]);
 
       expect(store.loadEdges().dangling.has("x")).toBe(true);
     });
@@ -85,7 +62,6 @@ describe("store", () => {
       addDocument(database, "a.md", "hash-a");
       addDocument(database, "b.md", "hash-b");
       const store = createStore(database);
-      store.saveEdges(makeGraph({ nodes: ["a.md", "b.md"] }));
 
       expect(store.loadEdges().nodes).toEqual(new Set(["a.md", "b.md"]));
     });
