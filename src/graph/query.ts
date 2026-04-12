@@ -5,7 +5,7 @@ export type Direction = "outgoing" | "incoming" | "both";
 export function neighbors(graph: Graph, node: string, direction: Direction = "both"): string[] {
   const outgoing = direction !== "incoming" ? graph.outgoing.get(node) : undefined;
   const incoming = direction !== "outgoing" ? graph.incoming.get(node) : undefined;
-  return [...new Set([...(outgoing ?? []), ...(incoming ?? [])])];
+  return [...new Set([...(outgoing ?? []), ...(incoming ?? [])])].sort();
 }
 
 export function findPaths(graph: Graph, from: string, to: string, maxPaths = 20): string[][] {

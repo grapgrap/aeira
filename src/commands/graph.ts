@@ -89,7 +89,11 @@ const allCommand = defineCommand({
       if (args.json) {
         console.log(JSON.stringify(result, null, 2));
       } else {
+        const nodesInEdges = new Set(result.edges.flatMap(([source, target]) => [source, target]));
         for (const [source, target] of result.edges) console.log(`${source} → ${target}`);
+        for (const node of result.nodes) {
+          if (!nodesInEdges.has(node)) console.log(node);
+        }
       }
     } finally {
       database.close();

@@ -33,19 +33,16 @@ describe("neighbors", () => {
     ],
   });
 
-  it("returns outgoing neighbors", () => {
-    expect(neighbors(graph, "a.md", "outgoing")).toEqual(expect.arrayContaining(["b.md", "c.md"]));
-    expect(neighbors(graph, "a.md", "outgoing")).toHaveLength(2);
+  it("returns outgoing neighbors sorted", () => {
+    expect(neighbors(graph, "a.md", "outgoing")).toEqual(["b.md", "c.md"]);
   });
 
   it("returns incoming neighbors", () => {
     expect(neighbors(graph, "a.md", "incoming")).toEqual(["d.md"]);
   });
 
-  it("returns both directions by default", () => {
-    const result = neighbors(graph, "a.md");
-    expect(result).toEqual(expect.arrayContaining(["b.md", "c.md", "d.md"]));
-    expect(result).toHaveLength(3);
+  it("returns both directions sorted by default", () => {
+    expect(neighbors(graph, "a.md")).toEqual(["b.md", "c.md", "d.md"]);
   });
 
   it("returns empty array for unknown node", () => {
