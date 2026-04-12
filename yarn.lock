@@ -270,6 +270,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@grapgrap/aeira@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@grapgrap/aeira@workspace:."
+  dependencies:
+    "@types/better-sqlite3": "npm:^7.6.13"
+    "@types/node": "npm:^22.15.2"
+    better-sqlite3: "npm:^11.9.1"
+    citty: "npm:^0.2.2"
+    husky: "npm:^9.1.7"
+    lint-staged: "npm:^16.4.0"
+    oxfmt: "npm:^0.44.0"
+    oxlint: "npm:^1.59.0"
+    tsdown: "npm:^0.12.5"
+    typescript: "npm:^5.8.3"
+    vitest: "npm:^3.1.2"
+    zod: "npm:^4.3.6"
+  bin:
+    aeira: ./dist/cli.js
+  languageName: unknown
+  linkType: soft
+
 "@isaacs/fs-minipass@npm:^4.0.0":
   version: 4.0.1
   resolution: "@isaacs/fs-minipass@npm:4.0.1"
@@ -1076,27 +1097,6 @@ __metadata:
   checksum: 10c0/b4cc16935235e80702fc90192e349e32f8ef0ed151ef506aa78c81a7c455ec18375c4125414b99f84b2e055199d66383e787675f0bcd87da7a4dbd59f9eac1d5
   languageName: node
   linkType: hard
-
-"aeira@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "aeira@workspace:."
-  dependencies:
-    "@types/better-sqlite3": "npm:^7.6.13"
-    "@types/node": "npm:^22.15.2"
-    better-sqlite3: "npm:^11.9.1"
-    citty: "npm:^0.2.2"
-    husky: "npm:^9.1.7"
-    lint-staged: "npm:^16.4.0"
-    oxfmt: "npm:^0.44.0"
-    oxlint: "npm:^1.59.0"
-    tsdown: "npm:^0.12.5"
-    typescript: "npm:^5.8.3"
-    vitest: "npm:^3.1.2"
-    zod: "npm:^4.3.6"
-  bin:
-    aeira: ./dist/cli.js
-  languageName: unknown
-  linkType: soft
 
 "agent-base@npm:^7.1.0, agent-base@npm:^7.1.2":
   version: 7.1.4

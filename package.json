@@ -1,8 +1,12 @@
 {
-  "name": "aeira",
-  "version": "0.0.0",
+  "name": "@grapgrap/aeira",
+  "version": "1.0.0",
   "description": "위키링크 기반 문서 관계 그래프 도구",
+  "license": "MIT",
   "bin": "./dist/cli.js",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "scripts": {
     "build": "tsdown",
