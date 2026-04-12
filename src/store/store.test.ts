@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { Graph } from "./graph";
+import type { Graph } from "../graph";
 import { createStore } from "./store";
 
 function createTestDatabase(): Database.Database {

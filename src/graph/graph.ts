@@ -1,6 +1,6 @@
 import { basename } from "node:path";
-import type { ScannedDocument } from "./scanner";
-import { parseWikiLinks } from "./wikilink";
+import type { ScannedDocument } from "../scanner";
+import { parseWikiLinks } from "../wikilink";
 
 export interface Graph {
   nodes: Set<string>;
