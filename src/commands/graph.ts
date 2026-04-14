@@ -1,13 +1,15 @@
 import { existsSync } from "node:fs";
-import { basename, resolve } from "node:path";
+import { resolve } from "node:path";
 import Database from "better-sqlite3";
 import { defineCommand } from "citty";
 import { type Direction, type Graph, findPaths, neighbors, snapshot } from "../graph";
+import { resolveVault } from "../registry";
 import { createReadonlyStore, getCollectionDbPath } from "../store";
 
 function openGraph(source: string): { database: Database.Database; graph: Graph } {
   const sourcePath = resolve(source);
-  const collection = basename(sourcePath);
+  const vault = resolveVault(sourcePath);
+  const collection = vault.name;
   const dbPath = getCollectionDbPath(collection);
 
   if (!existsSync(dbPath)) {

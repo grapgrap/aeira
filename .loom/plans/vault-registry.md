@@ -69,7 +69,7 @@ src/
 
 #### 세부 작업 목록
 
-- [ ] src/commands/init.ts - `aeira init <path> <name>`으로 변경
+- [x] src/commands/init.ts - `aeira init <path> <name>`으로 변경
   - positional name 인자 추가 (required)
   - basename 제거, registry.add(name, resolvedPath) 호출
   - initCollection(name, resolvedPath) 호출 (name이 collection 이름)
@@ -88,9 +88,9 @@ src/
 
 #### 세부 작업 목록
 
-- [ ] src/commands/sync.ts - `--source` 옵션 제거, registry.resolve(cwd)로 전환
-- [ ] src/commands/search.ts - 동일 전환
-- [ ] src/commands/graph.ts - openGraph 함수와 서브커맨드 3개 모두 동일 전환
+- [x] src/commands/sync.ts - resolveVault로 전환
+- [x] src/commands/search.ts - 동일 전환
+- [x] src/commands/graph.ts - openGraph 함수 동일 전환
 
 ### 4. 기존 basename 참조 제거 및 정리
 
@@ -105,8 +105,8 @@ src/
 
 #### 세부 작업 목록
 
-- [ ] basename import 제거 (init.ts, sync.ts, search.ts, graph.ts)
-- [ ] store/utils.ts - getCollectionDbPath는 유지 (collection name을 받는 것은 동일)
+- [x] basename import 제거 (init.ts, sync.ts, search.ts, graph.ts)
+- [x] store/utils.ts - getCollectionDbPath는 유지 (collection name을 받는 것은 동일)
 
 ## 검증
 
