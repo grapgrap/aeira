@@ -79,13 +79,13 @@ src/
 
 #### 세부 작업 목록
 
-- [ ] `src/commands/vault.ts` - vault 서브커맨드 그룹 생성 (add, list, remove, rename)
+- [x] `src/commands/vault.ts` - vault 서브커맨드 그룹 생성 (add, list, remove, rename)
   - `vault add <path> <name>`: 기존 init 로직 이동 (addVault + initCollection)
   - `vault list`: loadVaults 호출, name/path 출력
   - `vault remove <name>`: removeVault + removeCollection
   - `vault rename <old> <new>`: renameVault + renameCollection
-- [ ] `src/cli.ts` - init import 제거, vault import 추가, subCommands에 vault 등록
-- [ ] `src/commands/init.ts` - 삭제
+- [x] `src/cli.ts` - init import 제거, vault import 추가, subCommands에 vault 등록
+- [x] `src/commands/init.ts` - 삭제
 
 ### 4. 버전업 + 퍼블리시
 
