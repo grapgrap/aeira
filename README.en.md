@@ -15,12 +15,22 @@ aeira builds these relationships into a directed graph, navigable from the comma
 
 aeira operates through four commands.
 
-### init
+### vault
 
-Register a document collection by specifying a source path.
+Manage document collections (vaults).
 
 ```sh
-aeira init ./my-docs
+# Register a vault
+aeira vault add ./my-docs my-vault
+
+# List registered vaults
+aeira vault list
+
+# Rename a vault
+aeira vault rename old-name new-name
+
+# Remove a vault
+aeira vault remove my-vault
 ```
 
 ### sync
@@ -76,10 +86,10 @@ npm install -g aeira
 
 ### First Use
 
-Build the graph by specifying a source path.
+Register a vault and build the graph.
 
 ```sh
-aeira init ./my-docs
+aeira vault add ./my-docs my-vault
 cd ./my-docs
 aeira sync
 ```
