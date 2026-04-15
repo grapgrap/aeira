@@ -16,7 +16,8 @@
     "lint": "oxlint",
     "fmt": "oxfmt --write .",
     "fmt:check": "oxfmt --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "publish": "yarn npm publish --access public"
   },
   "dependencies": {
     "better-sqlite3": "^11.9.1",
