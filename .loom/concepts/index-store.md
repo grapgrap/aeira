@@ -33,5 +33,5 @@ CLI 호출마다 전체 문서를 재파싱하지 않도록, 구축된 그래프
 ## 관련 컨셉
 
 - [[graph]] - 영속화 대상인 그래프 자료구조
-- [[source]] - ir의 collection에 대응하는 문서 루트
+- [[vault]] - ir의 collection에 대응하는 문서 관리 단위
 - [[search]] - 같은 ir SQLite를 공유하여 검색 결과를 그래프 노드에 연결

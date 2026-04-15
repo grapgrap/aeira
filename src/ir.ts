@@ -48,6 +48,32 @@ export function updateCollection(collection: string): void {
   }
 }
 
+export function removeCollection(collection: string): void {
+  try {
+    execFileSync("ir", ["collection", "rm", "--purge", collection], { stdio: "inherit" });
+  } catch (error) {
+    if (isNotFound(error)) {
+      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.", {
+        cause: error,
+      });
+    }
+    throw error;
+  }
+}
+
+export function renameCollection(oldName: string, newName: string): void {
+  try {
+    execFileSync("ir", ["collection", "rename", oldName, newName], { stdio: "inherit" });
+  } catch (error) {
+    if (isNotFound(error)) {
+      throw new Error("ir이 설치되어 있지 않습니다. brew install vlwkaos/tap/ir로 설치하세요.", {
+        cause: error,
+      });
+    }
+    throw error;
+  }
+}
+
 export function initCollection(collection: string, sourcePath: string): void {
   try {
     execFileSync("ir", ["collection", "add", collection, sourcePath], { stdio: "inherit" });

@@ -2,7 +2,7 @@ import { mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { addVault, loadVaults, resolveVault } from "./registry";
+import { addVault, loadVaults, removeVault, renameVault, resolveVault } from "./registry";
 
 describe("registry", () => {
   let registryPath: string;
@@ -38,6 +38,49 @@ describe("registry", () => {
 
       expect(() => addVault("my-vault", "/workspace/vault-b", registryPath)).toThrow(
         "Vault already exists: my-vault",
+      );
+    });
+  });
+
+  describe("removeVault", () => {
+    it("removes a vault from the registry", () => {
+      addVault("my-vault", "/workspace/vault", registryPath);
+
+      removeVault("my-vault", registryPath);
+
+      expect(loadVaults(registryPath)).toHaveLength(0);
+    });
+
+    it("throws when removing a vault that does not exist", () => {
+      expect(() => removeVault("nonexistent", registryPath)).toThrow(
+        "Vault not found: nonexistent",
+      );
+    });
+  });
+
+  describe("renameVault", () => {
+    it("renames a vault in the registry", () => {
+      addVault("old-name", "/workspace/vault", registryPath);
+
+      renameVault("old-name", "new-name", registryPath);
+
+      const vaults = loadVaults(registryPath);
+      expect(vaults).toHaveLength(1);
+      expect(vaults[0]).toEqual({ name: "new-name", path: "/workspace/vault" });
+    });
+
+    it("throws when old name does not exist", () => {
+      expect(() => renameVault("nonexistent", "new-name", registryPath)).toThrow(
+        "Vault not found: nonexistent",
+      );
+    });
+
+    it("throws when new name already exists", () => {
+      addVault("vault-a", "/workspace/a", registryPath);
+      addVault("vault-b", "/workspace/b", registryPath);
+
+      expect(() => renameVault("vault-a", "vault-b", registryPath)).toThrow(
+        "Vault already exists: vault-b",
       );
     });
   });

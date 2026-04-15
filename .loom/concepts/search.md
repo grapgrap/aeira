@@ -31,6 +31,6 @@ aeira의 문서 탐색 진입점. ir에 위임하여 문서를 찾고, 결과를
 
 ## 관련 컨셉
 
-- [[source]] - ir의 collection에 대응하며, 검색 범위를 한정한다
+- [[vault]] - ir의 collection에 대응하며, 검색 범위를 한정한다
 - [[graph]] - 검색 결과를 진입점으로 받아 관계 탐색을 수행한다
 - [[index-store]] - 검색과 그래프가 같은 ir SQLite에 공존한다

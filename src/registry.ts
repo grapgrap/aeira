@@ -37,6 +37,35 @@ export function addVault(name: string, path: string, registryPath = DEFAULT_REGI
   saveVaults(vaults, registryPath);
 }
 
+export function removeVault(name: string, registryPath = DEFAULT_REGISTRY_PATH): void {
+  const vaults = loadVaults(registryPath);
+  if (!vaults.some((vault) => vault.name === name)) {
+    throw new Error(`Vault not found: ${name}`);
+  }
+  saveVaults(
+    vaults.filter((vault) => vault.name !== name),
+    registryPath,
+  );
+}
+
+export function renameVault(
+  oldName: string,
+  newName: string,
+  registryPath = DEFAULT_REGISTRY_PATH,
+): void {
+  const vaults = loadVaults(registryPath);
+  if (!vaults.some((vault) => vault.name === oldName)) {
+    throw new Error(`Vault not found: ${oldName}`);
+  }
+  if (vaults.some((vault) => vault.name === newName)) {
+    throw new Error(`Vault already exists: ${newName}`);
+  }
+  saveVaults(
+    vaults.map((vault) => (vault.name === oldName ? { ...vault, name: newName } : vault)),
+    registryPath,
+  );
+}
+
 export function resolveVault(path: string, registryPath = DEFAULT_REGISTRY_PATH): Vault {
   const resolvedPath = resolve(path);
   const vaults = loadVaults(registryPath);
