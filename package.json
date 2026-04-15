@@ -1,6 +1,6 @@
 {
   "name": "@grapgrap/aeira",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "위키링크 기반 문서 관계 그래프 도구",
   "license": "MIT",
   "bin": "./dist/cli.js",
